@@ -7,6 +7,7 @@ Created on Wed Jun 17 13:12:38 2020
 
 
 import scipy.io as sio
+from scipy.spatial import cKDTree
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,7 +39,6 @@ fig=plt.figure()
 ax = prices_FI_svk.plot(color='lightgray', legend=None)
 prices_FI_vtt.plot(ax=ax, style=linestyles, color='k', zorder=2)
 
-
 fig=plt.figure()
 for col in prices_FI_svk:
     to_plot = prices_FI_svk[col].copy().sort_values(ascending=False).reset_index(drop=True)
@@ -48,3 +48,18 @@ for col in prices_FI_vtt:
     to_plot.plot(label=col)
 plt.legend()
 
+# FInding the closer Svk scenario
+stats = all_prices.describe()
+# remove the row count
+stats = stats.iloc[1:]
+
+svk_idx = 3
+vtt_stats = stats.transpose().iloc[0:3,:].copy()
+svk_stats = stats.transpose().iloc[3:,:].copy()
+vtt_idx_find = 0
+tree = cKDTree(svk_stats)
+distances, indices = tree.query(vtt_stats.iloc[vtt_idx_find,:],k=2)
+print(svk_stats.iloc[indices,:])
+# Comparing the statistics of the closest scenarios
+idx_to_plot = np.append(svk_idx+indices,0)
+stats.transpose().iloc[idx_to_plot,:].transpose().plot.bar()
