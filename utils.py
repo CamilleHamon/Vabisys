@@ -9,13 +9,14 @@ import scipy.io as sio
 import pandas as pd
 import numpy as np
 from datetime import timedelta, datetime
+from pathlib import Path
 
 def get_hourly_time_index(year):
     start_date = datetime.strptime('{}-01-01'.format(year),'%Y-%m-%d')
     stop_date = start_date+timedelta(hours=8735) # 52 weeks => 8736 in Svks scenarios => first hour + 8735 other hours
     return pd.date_range(start_date, stop_date, freq='H')
 
-def load_svk_scenarios(filename, columns, data_folder='Data/RawData',area='SE3', wy=None):
+def load_svk_scenarios(filename, columns, data_folder='Data/RawData/',area='SE3', wy=None):
     svk_file = sio.loadmat(data_folder+filename)
     if '2030' in filename:
         index = get_hourly_time_index(2030)
