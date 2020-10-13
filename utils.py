@@ -21,7 +21,7 @@ def load_svk_scenarios(filename, columns, data_folder='Data/RawData/',area='SE3'
     if '2030' in filename:
         index = get_hourly_time_index(2030)
     elif '2040' in filename:
-        index = get_hourly_time_index(2030)
+        index = get_hourly_time_index(2040)
     df = pd.DataFrame(svk_file['M_Price'], columns=columns)
     df = pd.DataFrame(np.reshape(df[area].values, (8736,31)), index=index,
                              columns=['Scenario {}'.format(i) for i in range(1,32)])

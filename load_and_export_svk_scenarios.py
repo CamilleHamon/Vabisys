@@ -39,9 +39,9 @@ if create_price_scenarios:
     last_idx = first_monday+8736
     prices = prices.iloc[first_monday:last_idx,]
     # export the corresponding dataframe
-    new_index = get_hourly_time_index(2020)
+    new_index = get_hourly_time_index(2019)
     prices.index = new_index
-    prices.to_csv('Data/CreatedScenarios/DAprice-scenarios/price_{}.csv'.format(2020), index_label='Timestamp')
+    prices.to_csv('Data/CreatedScenarios/DAprice-scenarios/price_{}.csv'.format(2019), index_label='Timestamp')
 
 if create_heat_scenarios:
     folder = Path('Data/') / 'RawData' / 'Boras'
