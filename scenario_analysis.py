@@ -26,6 +26,16 @@ prices_2040ref_svk = load_svk_scenarios('m_price_2040ref', columns, area=area)
 prices_2040low_svk = load_svk_scenarios('m_price_2040low', columns, area=area)
 prices_2040high_svk = load_svk_scenarios('m_price_2040high', columns, area=area)
 
+# Compare 2040 scenarios
+comparison_df = pd.concat([prices_2040high_svk.describe()['Scenario 1'], prices_2040low_svk.describe()['Scenario 1']], keys=['2040high','2040low'], names=['Scenario'])
+comparison_df = comparison_df.unstack(level=[0]).drop('count')
+comparison_withoumax = comparison_df.drop('max')
+fig = plt.figure()
+comparison_withoumax.plot.bar()
+fig = plt.figure()
+ax = comparison_df.loc['max',:].plot.bar()
+ax.set_ylabel('Max value')
+
 nb_hours = 8736
 # To be consistent with Svk way of modelling, we only keep 52 weeks per year 
 # i.e. 364 days or 8736 hours (8735 = 8736-1 because of indexing from zero)

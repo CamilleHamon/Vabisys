@@ -16,7 +16,7 @@ def get_hourly_time_index(year):
     stop_date = start_date+timedelta(hours=8735) # 52 weeks => 8736 in Svks scenarios => first hour + 8735 other hours
     return pd.date_range(start_date, stop_date, freq='H')
 
-def load_svk_scenarios(filename, columns, data_folder='Data/RawData/',area='SE3', wy=None):
+def load_svk_scenarios(filename, columns, data_folder='Data/RawData/',area='SE3', weather_year=None):
     svk_file = sio.loadmat(data_folder+filename)
     if '2030' in filename:
         index = get_hourly_time_index(2030)
@@ -25,9 +25,9 @@ def load_svk_scenarios(filename, columns, data_folder='Data/RawData/',area='SE3'
     df = pd.DataFrame(svk_file['M_Price'], columns=columns)
     df = pd.DataFrame(np.reshape(df[area].values, (8736,31)), index=index,
                              columns=['Scenario {}'.format(i) for i in range(1,32)])
-    if wy is not None:
+    if weather_year is not None:
         # only one scenario
-        s = 'Scenario {}'.format(wy)
+        s = 'Scenario {}'.format(weather_year)
         df = df.loc[:,s]
     return df
 
